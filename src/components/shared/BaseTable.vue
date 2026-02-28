@@ -1,13 +1,40 @@
 <template>
   <table class="base-table">
     <thead>
-      <slot name="head" />
+      <tr>
+        <th v-for="column in visibleColumns" :key="column.label">{{ column.label }}</th>
+      </tr>
     </thead>
     <tbody>
-      <slot name="body" />
+      <tr v-for="item in items" :key="item.key">
+        <td v-for="column in visibleColumns" :key="column.key">
+          <slot v-if="Object.keys($slots).includes(column['key'])" :name="column['key']" :item="item" />
+          <span v-else>{{ item[column.key as keyof typeof item] }}</span>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
+<script setup lang="ts" generic="T">
+import { computed } from 'vue'
+
+type Column = {
+  label: string
+  key: string
+  isHidden?: boolean
+}
+
+type Item = T & { key: string | number }
+
+type Props = {
+  columns: Column[]
+  items: Item[]
+}
+
+const { columns, items } = defineProps<Props>()
+
+const visibleColumns = computed(() => columns.filter((col) => !col.isHidden))
+</script>
 
 <style scoped>
 .base-table {

@@ -1,16 +1,9 @@
 <template>
   <div class="horse-list-panel" data-testid="horse-list">
     <SectionHeader color="#fa8072">Horses</SectionHeader>
-    <BaseTable>
-      <template #head>
-        <tr>
-          <th>Name</th>
-          <th>Condition</th>
-          <th>Color</th>
-        </tr>
-      </template>
-      <template #body>
-        <HorseTableRow v-for="horse in horses" :key="horse.id" :horse="horse" />
+    <BaseTable :columns :items>
+      <template #color="{ item }">
+        <span class="color-swatch" :style="{ backgroundColor: item.color }"></span>
       </template>
     </BaseTable>
   </div>
@@ -21,11 +14,25 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import SectionHeader from './shared/SectionHeader.vue'
 import BaseTable from './shared/BaseTable.vue'
-import HorseTableRow from './HorseTableRow.vue'
 import { key } from '@/store'
 
 const store = useStore(key)
+
 const horses = computed(() => store.state.horses.horses)
+
+const columns = computed(() => [
+  { label: 'Name', key: 'name' },
+  { label: 'Condition', key: 'condition', width: 70 },
+  { label: 'Color', key: 'color' },
+])
+const items = computed(() =>
+  Array.from(horses.value.values()).map((horse) => ({
+    key: horse.id,
+    name: horse.name,
+    condition: horse.condition,
+    color: horse.color,
+  })),
+)
 </script>
 
 <style scoped>
@@ -33,5 +40,12 @@ const horses = computed(() => store.state.horses.horses)
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+.color-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  vertical-align: middle;
 }
 </style>

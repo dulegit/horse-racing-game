@@ -2,7 +2,7 @@
   <div class="program-panel" data-testid="program-panel">
     <SectionHeader color="#f39c12">Program</SectionHeader>
     <div class="rounds" data-testid="program-rounds">
-      <ProgramRound v-for="round in program" :key="round.roundIndex" :round="round" :horses-by-id />
+      <ProgramRound v-for="round in program" :key="round.roundIndex" :round :horses />
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ import { key } from '@/store'
 
 const store = useStore(key)
 const program = computed(() => store.state.race.program)
-const horsesById = computed(() => store.getters.horsesById)
+const horses = computed(() => store.state.horses.horses)
 </script>
 
 <style scoped>

@@ -1,7 +1,10 @@
 <template>
   <div class="app">
     <AppHeader />
-    <main class="columns">
+    <div v-if="store.state.horses.errorMessage" class="error-message">
+      {{ store.state.horses.errorMessage }}
+    </div>
+    <main v-else class="columns">
       <aside class="col-left">
         <HorseListPanel />
       </aside>
@@ -22,6 +25,13 @@ import HorseListPanel from './components/HorseListPanel.vue'
 import RaceTrackPanel from './components/RaceTrackPanel.vue'
 import ProgramPanel from './components/ProgramPanel.vue'
 import ResultsPanel from './components/ResultsPanel.vue'
+import { useStore } from 'vuex'
+import { key } from './store'
+import { onMounted } from 'vue'
+
+const store = useStore(key)
+
+onMounted(() => store.dispatch('initHorses'))
 </script>
 
 <style scoped>
@@ -57,5 +67,11 @@ import ResultsPanel from './components/ResultsPanel.vue'
   flex-direction: column;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin: 20px;
 }
 </style>

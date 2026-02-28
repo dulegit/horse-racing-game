@@ -8,7 +8,11 @@ export const resultsModule = {
   state: (): ResultsState => ({
     results: [],
   }),
-  mutations: {},
+  mutations: {
+    clearResults(state: ResultsState) {
+      state.results = []
+    },
+  },
   actions: {},
   getters: {},
 }

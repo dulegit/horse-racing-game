@@ -4,7 +4,7 @@ import { horsesModule } from './modules/horses'
 import { raceModule } from './modules/race'
 import { resultsModule } from './modules/results'
 
-export interface State {
+export type State = {
   horses: ReturnType<typeof horsesModule.state>
   race: ReturnType<typeof raceModule.state>
   results: ReturnType<typeof resultsModule.state>

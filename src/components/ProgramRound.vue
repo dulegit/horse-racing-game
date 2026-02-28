@@ -1,27 +1,47 @@
 <template>
   <div class="program-round" :data-testid="`program-round-${round.roundIndex}`">
     <div class="round-header">{{ ordinal(round.roundIndex) }} Lap &mdash; {{ round.distance }}m</div>
-    <ol class="horse-list">
-      <li v-for="id in round.horseIds" :key="id">
-        <span class="swatch" :style="{ backgroundColor: horsesById[id]?.color }"></span>
-        {{ horsesById[id]?.name ?? `Horse ${id}` }}
-      </li>
-    </ol>
+    <BaseTable :columns :items>
+      <template #name="{ item }">
+        <span class="swatch" :style="{ backgroundColor: horses.get(item.key)?.color }"></span>
+        {{ item.name }}
+      </template>
+    </BaseTable>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { RoundProgram, Horse } from '@/types'
+import BaseTable from './shared/BaseTable.vue'
+import { computed } from 'vue'
 
-defineProps<{
+type Props = {
   round: RoundProgram
-  horsesById: Record<number, Horse>
-}>()
+  horses: Map<Horse['id'], Horse>
+}
+
+const { round, horses } = defineProps<Props>()
 
 const ORDINALS = ['', '1st', '2nd', '3rd', '4th', '5th', '6th']
 function ordinal(n: number): string {
   return ORDINALS[n] ?? `${n}th`
 }
+
+const columns = computed(() => [
+  { label: 'Position', key: 'position' },
+  { label: 'Name', key: 'name' },
+])
+
+const items = computed(() =>
+  round.horseIds.map((id, i) => {
+    const horse = horses.get(id)
+    return {
+      key: id,
+      position: i + 1,
+      name: horse?.name ?? `Horse ${id}`,
+    }
+  }),
+)
 </script>
 
 <style scoped>
@@ -31,11 +51,13 @@ function ordinal(n: number): string {
 }
 
 .round-header {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #555;
-  margin-bottom: 0.25rem;
+  color: #fff;
+  background-color: #4a90d9;
+  padding: 0.25rem;
+  text-align: center;
 }
 
 .horse-list {
