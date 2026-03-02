@@ -83,7 +83,7 @@ export function useRaceSimulation() {
       clearInterval(intervalId.value)
       intervalId.value = null
     }
-    intervalId.value = setInterval(step, 10)
+    intervalId.value = setInterval(step, 30)
   }
 
   function stopAnimation() {
