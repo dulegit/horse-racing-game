@@ -3,7 +3,7 @@
     <span class="lane-number">{{ lane }}</span>
     <span class="horse-name">{{ horse.name }}</span>
     <div class="lane-track">
-      <RaceHorse :horse />
+      <RaceHorse :horse :progress />
     </div>
     <div class="finish-mark"></div>
   </div>
@@ -52,6 +52,7 @@ defineProps<{
   position: relative;
   height: 100%;
   background: #f9f9f9;
+  padding-right: 32px;
 }
 
 .finish-mark {

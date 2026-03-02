@@ -1,4 +1,4 @@
-import type { Horse } from '@/types'
+import { HORSES, type Horse } from '@/types'
 import { generateHorses } from '@/utils/helpers'
 
 interface HorsesState {
@@ -20,9 +20,9 @@ export const horsesModule = {
     },
   },
   actions: {
-    initHorses({ commit }: { commit: Function }, count: number = 20) {
-      if (count < 1 || count > 20) {
-        commit('setErrorMessage', 'Count must be between 1 and 20')
+    initHorses({ commit }: { commit: Function }, count: number = HORSES.MAX_GENERATION) {
+      if (count < 1 || count > HORSES.MAX_GENERATION) {
+        commit('setErrorMessage', `Count must be between 1 and ${HORSES.MAX_GENERATION}`)
         return
       }
       commit('setErrorMessage', null)

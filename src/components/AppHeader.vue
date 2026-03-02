@@ -9,28 +9,26 @@
       >
         Generate
       </BaseButton>
-      <BaseButton :disabled="!hasProgram || isFinished || hasError" data-testid="btn-start-pause">
+      <BaseButton
+        :disabled="!store.getters.hasProgram || hasError"
+        data-testid="btn-start-pause"
+        @click="onProgramTriggered"
+      >
         {{ isRunning ? 'Pause' : 'Start' }}
       </BaseButton>
-      <BaseButton data-testid="btn-reset">Reset</BaseButton>
+      <BaseButton data-testid="btn-reset" @click="onResetRace">Reset</BaseButton>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import BaseButton from './shared/BaseButton.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
+import { useRaceSimulation } from '@/composables/useRaceSimulation'
 
 const store = useStore(key)
-
-const horsesState = computed(() => store.state.horses)
-const hasError = computed(() => !!horsesState.value.errorMessage)
-
-const isRunning = ref(false)
-const hasProgram = ref(false)
-const isFinished = ref(false)
+const { isRunning, hasError, onProgramTriggered, onResetRace } = useRaceSimulation()
 </script>
 
 <style scoped>

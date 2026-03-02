@@ -1,13 +1,15 @@
 <template>
   <div class="race-track-panel" data-testid="race-track">
     <SectionHeader color="#4a90d9">
-      <template v-if="currentRoundProgram"> Round {{ 1 }} / {{ 6 }} &mdash; {{ 1200 }}m </template>
+      <template v-if="currentRoundProgram">
+        Round {{ currentRoundProgram.roundId }} / {{ totalRounds }} &mdash; {{ currentRoundProgram.distance }}m
+      </template>
       <template v-else>Race Track</template>
     </SectionHeader>
     <div class="lanes" data-testid="race-lanes">
       <RaceLane
-        v-for="lane in lanes"
-        :key="lane.horseId"
+        v-for="lane in Array.from(lanes.values())"
+        :key="lane.horse.id"
         :lane="lane.laneNumber"
         :horse="lane.horse"
         :progress="lane.progress"
@@ -21,23 +23,14 @@ import { computed, ref, type Ref } from 'vue'
 import SectionHeader from './shared/SectionHeader.vue'
 import RaceLane from './RaceLane.vue'
 import type { RoundProgram } from '@/types'
+import { useStore } from 'vuex'
+import { key } from '@/store'
 
-const currentRoundProgram: Ref<RoundProgram | null> = ref(null) // Placeholder for current round program data
-const lanes = computed(() => {
-  return [
-    {
-      horseId: 0,
-      laneNumber: 1,
-      horse: {
-        id: 0,
-        name: 'Horse 1',
-        color: '#3498db',
-        condition: 80,
-      },
-      progress: 0,
-    },
-  ]
-})
+const store = useStore(key)
+
+const currentRoundProgram: Ref<RoundProgram | null> = computed(() => store.getters.currentRoundProgram)
+const totalRounds = computed(() => store.state.race.program.length)
+const lanes = computed(() => store.state.race.raceProgress)
 </script>
 
 <style scoped>

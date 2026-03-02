@@ -33,7 +33,14 @@ const store = useStore(key)
 
 onMounted(() => store.dispatch('initHorses'))
 </script>
-
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ecf0f1;
+  color: #2c3e50;
+}
+</style>
 <style scoped>
 .app {
   display: flex;
@@ -43,30 +50,27 @@ onMounted(() => store.dispatch('initHorses'))
 }
 
 .columns {
-  display: flex;
-  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(200px, auto) 1fr minmax(400px, auto);
   overflow: hidden;
 }
 
 .col-left {
-  width: 200px;
   overflow-y: auto;
   border-right: 1px solid #ddd;
-  flex-shrink: 0;
 }
 
 .col-center {
-  flex: 1;
   overflow-y: auto;
   border-right: 1px solid #ddd;
 }
 
 .col-right {
-  width: 260px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  background-color: #ecf0f1;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
 .error-message {

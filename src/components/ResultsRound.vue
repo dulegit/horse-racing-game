@@ -1,43 +1,63 @@
 <template>
-  <div class="results-round" :data-testid="`results-round-${result.roundIndex}`">
-    <div class="round-header">{{ ordinal(result.roundIndex) }} Lap &mdash; {{ result.distance }}m</div>
-    <ol class="placement-list">
-      <li v-for="(placement, i) in result.placements" :key="placement.horseId">
-        <span class="position">{{ i + 1 }}.</span>
-        <span class="swatch" :style="{ backgroundColor: horsesById[placement.horseId]?.color }"></span>
-        <span class="name">{{ horsesById[placement.horseId]?.name ?? `Horse ${placement.horseId}` }}</span>
-        <span class="time">{{ placement.timeMs }}ms</span>
-      </li>
-    </ol>
+  <div class="results-round" :data-testid="`results-round-${result.roundId}`">
+    <div class="table-caption">{{ ordinal(result.roundId) }} Lap &mdash; {{ result.distance }}m</div>
+    <BaseTable :columns :items>
+      <template #name="{ item }">
+        <span class="swatch" :style="{ backgroundColor: horses.get(item.key)?.color }"></span>
+        {{ item.name }}
+      </template>
+    </BaseTable>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { RoundResult, Horse } from '@/types'
+import BaseTable from './shared/BaseTable.vue'
+import { computed } from 'vue'
 
-defineProps<{
+type Props = {
   result: RoundResult
-  horsesById: Record<number, Horse>
-}>()
+  horses: Map<Horse['id'], Horse>
+}
+
+const { result, horses } = defineProps<Props>()
 
 const ORDINALS = ['', '1st', '2nd', '3rd', '4th', '5th', '6th']
 function ordinal(n: number): string {
   return ORDINALS[n] ?? `${n}th`
 }
+
+const columns = computed(() => [
+  { label: 'Position', key: 'position' },
+  { label: 'Name', key: 'name' },
+])
+
+const items = computed(() =>
+  result.horseIds.map((place, i) => {
+    const horse = horses.get(place)
+    return {
+      key: place,
+      position: i + 1,
+      name: horse?.name ?? `Horse ${place}`,
+    }
+  }),
+)
 </script>
 
 <style scoped>
 .results-round {
   border-bottom: 1px solid #eee;
-  padding: 0.4rem 0.5rem;
+  background-color: #fff;
 }
 
-.round-header {
-  font-size: 0.75rem;
+.table-caption {
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #555;
-  margin-bottom: 0.25rem;
+  color: #fff;
+  background-color: #4a90d9;
+  padding: 0.25rem;
+  text-align: center;
 }
 
 .placement-list {

@@ -1,6 +1,6 @@
 <template>
-  <div class="program-round" :data-testid="`program-round-${round.roundIndex}`">
-    <div class="round-header">{{ ordinal(round.roundIndex) }} Lap &mdash; {{ round.distance }}m</div>
+  <div class="program-round" :data-testid="`program-round-${round.roundId}`">
+    <div class="table-caption">{{ ordinal(round.roundId) }} Lap &mdash; {{ round.distance }}m</div>
     <BaseTable :columns :items>
       <template #name="{ item }">
         <span class="swatch" :style="{ backgroundColor: horses.get(item.key)?.color }"></span>
@@ -28,7 +28,7 @@ function ordinal(n: number): string {
 }
 
 const columns = computed(() => [
-  { label: 'Position', key: 'position' },
+  { label: 'Lane', key: 'position' },
   { label: 'Name', key: 'name' },
 ])
 
@@ -46,11 +46,11 @@ const items = computed(() =>
 
 <style scoped>
 .program-round {
+  background-color: #fff;
   border-bottom: 1px solid #eee;
-  padding: 0.4rem 0.5rem;
 }
 
-.round-header {
+.table-caption {
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;

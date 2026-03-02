@@ -1,3 +1,8 @@
+export enum HORSES {
+  MAX_PER_ROUND = 10,
+  MAX_GENERATION = 20,
+}
+
 export type Horse = {
   id: number
   name: string
@@ -6,9 +11,15 @@ export type Horse = {
 }
 
 export type RoundProgram = {
-  roundIndex: number // 1..6
+  roundId: number // 1..6
   distance: number // one of fixed distances
   horseIds: number[] // length 10
+}
+
+export type LaneItem = {
+  horse: Horse
+  laneNumber: number
+  progress: number // 0..100
 }
 
 type Placement = {
@@ -17,7 +28,7 @@ type Placement = {
 }
 
 export type RoundResult = {
-  roundIndex: number
+  roundId: number
   distance: number
-  placements: Placement[]
+  horseIds: number[]
 }

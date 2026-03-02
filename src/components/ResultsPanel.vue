@@ -2,7 +2,7 @@
   <div class="results-panel" data-testid="results-panel">
     <SectionHeader color="#2ecc71">Results</SectionHeader>
     <div class="rounds" data-testid="results-rounds">
-      <ResultsRound v-for="result in results" :key="result.roundIndex" :result="result" :horses-by-id />
+      <ResultsRound v-for="result in results" :key="result.roundId" :result="result" :horses />
     </div>
   </div>
 </template>
@@ -10,18 +10,13 @@
 <script setup lang="ts">
 import SectionHeader from './shared/SectionHeader.vue'
 import ResultsRound from './ResultsRound.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { key } from '@/store'
 
-const results = ref([
-  {
-    roundIndex: 1,
-    distance: 1200,
-    placements: [{ horseId: 0, timeMs: 120 }],
-  },
-])
-const horsesById = ref({
-  0: { id: 0, name: 'Horse 1', color: '#3498db', condition: 80 },
-})
+const store = useStore(key)
+const results = computed(() => store.state.results.results)
+const horses = computed(() => store.state.horses.horses)
 </script>
 
 <style scoped>

@@ -1,4 +1,4 @@
-import type { Horse, RoundProgram } from '@/types'
+import { HORSES, type Horse, type RoundProgram } from '@/types'
 
 function getRandomColor(existingColors: string[] = []): string {
   let color: string
@@ -31,11 +31,25 @@ export function generateHorses(count: number): Map<Horse['id'], Horse> {
 export function getRaceSchedule(horses: Map<Horse['id'], Horse>, distance: number[]): RoundProgram[] {
   return distance.map((distance, i) => {
     const shuffledHorses = Array.from(horses.values()).sort(() => 0.5 - Math.random())
-    const horseIds = shuffledHorses.slice(0, 10).map((h) => h.id)
+    const horseIds = shuffledHorses.slice(0, HORSES.MAX_PER_ROUND).map((h) => h.id)
     return {
-      roundIndex: i + 1,
+      roundId: i + 1,
       distance,
       horseIds,
+    }
+  })
+}
+
+export function createLaneItems(horseIds: number[], horses: Map<Horse['id'], Horse>) {
+  return horseIds.map((horseId, index) => {
+    const horse = horses.get(horseId)
+    if (!horse) {
+      throw new Error(`Horse with ID ${horseId} not found in horses map`)
+    }
+    return {
+      horse,
+      laneNumber: index + 1,
+      progress: 0,
     }
   })
 }

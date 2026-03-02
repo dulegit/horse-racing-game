@@ -2,7 +2,7 @@
   <div class="program-panel" data-testid="program-panel">
     <SectionHeader color="#f39c12">Program</SectionHeader>
     <div class="rounds" data-testid="program-rounds">
-      <ProgramRound v-for="round in program" :key="round.roundIndex" :round :horses />
+      <ProgramRound v-for="round in program" :key="round.roundId" :round :horses />
     </div>
   </div>
 </template>
