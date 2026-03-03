@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import SectionHeader from './shared/SectionHeader.vue'
-import ResultsRound from './ResultsRound.vue'
+import SectionHeader from '@/components/shared/SectionHeader.vue'
+import ResultsRound from '@/components/results/ResultsRound.vue'
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'

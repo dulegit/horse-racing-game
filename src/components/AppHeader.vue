@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from './shared/BaseButton.vue'
+import BaseButton from '@/components/shared/BaseButton.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { useRaceSimulation } from '@/composables/useRaceSimulation'

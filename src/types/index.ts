@@ -10,7 +10,7 @@ export type Horse = {
   condition: number // 1..100
 }
 
-export type RoundProgram = {
+export type RaceRound = {
   roundId: number // 1..6
   distance: number // one of fixed distances
   horseIds: number[] // length 10
@@ -20,15 +20,4 @@ export type LaneItem = {
   horse: Horse
   laneNumber: number
   progress: number // 0..100
-}
-
-type Placement = {
-  horseId: number
-  timeMs: number
-}
-
-export type RoundResult = {
-  roundId: number
-  distance: number
-  horseIds: number[]
 }

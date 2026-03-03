@@ -20,15 +20,15 @@
 
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
-import SectionHeader from './shared/SectionHeader.vue'
-import RaceLane from './RaceLane.vue'
-import type { RoundProgram } from '@/types'
+import SectionHeader from '@/components/shared/SectionHeader.vue'
+import RaceLane from '@/components/race/RaceLane.vue'
+import type { RaceRound } from '@/types'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 
 const store = useStore(key)
 
-const currentRoundProgram: Ref<RoundProgram | null> = computed(() => store.getters.currentRoundProgram)
+const currentRoundProgram: Ref<RaceRound | null> = computed(() => store.getters.currentRoundProgram)
 const totalRounds = computed(() => store.state.race.program.length)
 const lanes = computed(() => store.state.race.raceProgress)
 </script>

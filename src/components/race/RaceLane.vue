@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import type { Horse } from '@/types'
-import RaceHorse from './RaceHorse.vue'
+import RaceHorse from '@/components/race/RaceHorse.vue'
 
 defineProps<{
   lane: number

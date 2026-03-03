@@ -1,4 +1,4 @@
-import { HORSES, type Horse, type RoundProgram } from '@/types'
+import { HORSES, type Horse, type RaceRound } from '@/types'
 
 function getRandomColor(existingColors: string[] = []): string {
   let color: string
@@ -28,7 +28,7 @@ export function generateHorses(count: number): Map<Horse['id'], Horse> {
   return horsesMap
 }
 
-export function getRaceSchedule(horses: Map<Horse['id'], Horse>, distance: number[]): RoundProgram[] {
+export function getRaceSchedule(horses: Map<Horse['id'], Horse>, distance: number[]): RaceRound[] {
   return distance.map((distance, i) => {
     const shuffledHorses = Array.from(horses.values()).sort(() => 0.5 - Math.random())
     const horseIds = shuffledHorses.slice(0, HORSES.MAX_PER_ROUND).map((h) => h.id)

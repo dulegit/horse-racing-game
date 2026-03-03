@@ -10,8 +10,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import SectionHeader from './shared/SectionHeader.vue'
-import ProgramRound from './ProgramRound.vue'
+import SectionHeader from '@/components/shared/SectionHeader.vue'
+import ProgramRound from '@/components/program/ProgramRound.vue'
 import { key } from '@/store'
 
 const store = useStore(key)

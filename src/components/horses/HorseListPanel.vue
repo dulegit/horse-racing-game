@@ -12,8 +12,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import SectionHeader from './shared/SectionHeader.vue'
-import BaseTable from './shared/BaseTable.vue'
+import SectionHeader from '@/components/shared/SectionHeader.vue'
+import BaseTable from '@/components/shared/BaseTable.vue'
 import { key } from '@/store'
 
 const store = useStore(key)

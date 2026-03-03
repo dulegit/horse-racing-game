@@ -4,7 +4,7 @@
     :data-testid="`horse-${horse.id}`"
     :style="{ left: `${progress}%`, borderColor: horse.color }"
   >
-    <img src="../assets/horse-running.svg" alt="Horse" />
+    <img src="@/assets/horse-running.svg" alt="Horse" />
   </div>
 </template>
 

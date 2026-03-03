@@ -1,6 +1,6 @@
 import { key } from '@/store'
 import { DISTANCES } from '@/store/modules/race'
-import type { RoundProgram, RoundResult } from '@/types'
+import type { RaceRound } from '@/types'
 import { computed, ref, type ComputedRef } from 'vue'
 import { useStore } from 'vuex'
 
@@ -14,7 +14,7 @@ export function useRaceSimulation() {
 
   const isRunning = computed(() => raceState.value.raceStatus === 'running')
   const hasError = computed(() => !!horsesState.value.errorMessage)
-  const currentRound: ComputedRef<RoundProgram | null> = computed(() => store.getters.currentRoundProgram)
+  const currentRound: ComputedRef<RaceRound | null> = computed(() => store.getters.currentRoundProgram)
 
   function step() {
     const allFinished = Array.from(raceState.value.raceProgress.values()).every((progress) => progress.progress >= 100)
@@ -27,7 +27,6 @@ export function useRaceSimulation() {
 
         const horseCondition = horsesState.value.horses.get(horseId)?.condition || 50
         const distance = currentRound.value?.distance || 1200
-        console.log(distance)
         const percentInrease = calculateHorseProgress(horseCondition, distance)
         store.dispatch('updateRaceProgress', { horseId, progress: Number(percentInrease.toFixed(2)) })
       })
@@ -35,7 +34,7 @@ export function useRaceSimulation() {
       store.dispatch('updateRaceStatus', 'finished')
       const currentRoundIndex = raceState.value.currentRoundIndex ?? 0
       resetAnimation()
-      const roundResult: RoundResult = {
+      const roundResult: RaceRound = {
         roundId: currentRoundIndex + 1,
         distance: DISTANCES[currentRoundIndex] || 1200,
         horseIds: [...raceState.value.currentRoundPlacement],
@@ -55,7 +54,6 @@ export function useRaceSimulation() {
       store.dispatch('resetCurrentPlacement')
       setTimeout(() => {
         store.dispatch('startRace')
-        console.log('Next round started')
         startAnimation()
       }, 500)
     }

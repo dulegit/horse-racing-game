@@ -20,13 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import AppHeader from './components/AppHeader.vue'
-import HorseListPanel from './components/HorseListPanel.vue'
-import RaceTrackPanel from './components/RaceTrackPanel.vue'
-import ProgramPanel from './components/ProgramPanel.vue'
-import ResultsPanel from './components/ResultsPanel.vue'
+import AppHeader from '@/components/AppHeader.vue'
+import HorseListPanel from '@/components/horses/HorseListPanel.vue'
+import RaceTrackPanel from '@/components/race/RaceTrackPanel.vue'
+import ProgramPanel from '@/components/program/ProgramPanel.vue'
+import ResultsPanel from '@/components/results/ResultsPanel.vue'
 import { useStore } from 'vuex'
-import { key } from './store'
+import { key } from '@/store'
 import { onMounted } from 'vue'
 
 const store = useStore(key)

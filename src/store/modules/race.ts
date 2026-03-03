@@ -1,4 +1,4 @@
-import type { LaneItem, RoundProgram } from '@/types'
+import type { LaneItem, RaceRound } from '@/types'
 import type { State } from '..'
 import { createLaneItems, getRaceSchedule } from '@/utils/helpers'
 import store from '..'
@@ -8,7 +8,7 @@ export const DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200]
 type RaceStatus = 'idle' | 'ready' | 'running' | 'paused' | 'finished'
 
 type RaceState = {
-  program: RoundProgram[]
+  program: RaceRound[]
   currentRoundIndex: number | null
   currentRoundPlacement: number[]
   raceStatus: RaceStatus
@@ -24,7 +24,7 @@ export const raceModule = {
     raceProgress: new Map(),
   }),
   mutations: {
-    setProgram(state: RaceState, program: RoundProgram[]) {
+    setProgram(state: RaceState, program: RaceRound[]) {
       state.program = program
     },
     setCurrentRoundIndex(state: RaceState, index: number | null) {
@@ -74,7 +74,7 @@ export const raceModule = {
     hasProgram(state: RaceState): boolean {
       return state.program.length > 0
     },
-    currentRoundProgram(state: RaceState): RoundProgram | null {
+    currentRoundProgram(state: RaceState): RaceRound | null {
       if (state.currentRoundIndex === null) return null
       return state.program[state.currentRoundIndex] || null
     },
