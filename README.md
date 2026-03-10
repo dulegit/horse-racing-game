@@ -62,8 +62,8 @@ src/
 
 ## Architecture Notes
 
-- Vuex modules are **non-namespaced** — state is nested but mutations/actions/getters share a flat namespace
-- `useRaceSimulation` lives in `AppHeader.vue` and owns the `setInterval` tick loop (30ms)
+- Vuex modules are **namespaced** — mutations, actions, and getters are scoped per module
+- `useRaceSimulation` lives in `AppHeader.vue` and owns the `setInterval` tick loop (30ms); cleans up via `onUnmounted`
 - `App.vue` only dispatches `initHorses` on mount
 
 ## IDE Setup
