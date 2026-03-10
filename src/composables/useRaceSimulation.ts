@@ -15,7 +15,7 @@ export function useRaceSimulation() {
 
   const isRunning = computed(() => raceState.value.raceStatus === 'running')
   const hasError = computed(() => !!horsesState.value.errorMessage)
-  const currentRound: ComputedRef<RaceRound | null> = computed(() => store.getters.currentRoundProgram)
+  const currentRound: ComputedRef<RaceRound | null> = computed(() => store.getters['race/currentRoundProgram'])
 
   function step() {
     const allFinished = Array.from(raceState.value.raceProgress.values()).every((progress) => progress.progress >= 100)
@@ -29,10 +29,10 @@ export function useRaceSimulation() {
         const horseCondition = horsesState.value.horses.get(horseId)?.condition || 50
         const distance = currentRound.value?.distance || 1200
         const percentInrease = calculateHorseProgress(horseCondition, distance)
-        store.dispatch('updateRaceProgress', { horseId, progress: Number(percentInrease.toFixed(2)) })
+        store.dispatch('race/updateRaceProgress', { horseId, progress: Number(percentInrease.toFixed(2)) })
       })
     } else {
-      store.dispatch('updateRaceStatus', 'finished')
+      store.dispatch('race/updateRaceStatus', 'finished')
       const currentRoundIndex = raceState.value.currentRoundIndex ?? 0
       resetAnimation()
       const roundResult: RaceRound = {
@@ -40,7 +40,7 @@ export function useRaceSimulation() {
         distance: DISTANCES[currentRoundIndex] || 1200,
         horseIds: [...raceState.value.currentRoundPlacement],
       }
-      store.dispatch('saveRoundResult', roundResult)
+      store.dispatch('results/saveRoundResult', roundResult)
       if (currentRoundIndex < raceState.value.program.length - 1) {
         timeoutIds.value.push(setTimeout(tryNextRound, 500))
       }
@@ -50,12 +50,12 @@ export function useRaceSimulation() {
   function tryNextRound() {
     const nextRoundIndex = (raceState.value.currentRoundIndex ?? 0) + 1
     if (nextRoundIndex < raceState.value.program.length) {
-      store.dispatch('updateCurrentRoundIndex', nextRoundIndex)
-      store.dispatch('startNewRound')
-      store.dispatch('resetCurrentPlacement')
+      store.dispatch('race/updateCurrentRoundIndex', nextRoundIndex)
+      store.dispatch('race/startNewRound')
+      store.dispatch('race/resetCurrentPlacement')
       timeoutIds.value.push(
         setTimeout(() => {
-          store.dispatch('startRace')
+          store.dispatch('race/startRace')
           startAnimation()
         }, 500),
       )
@@ -98,16 +98,16 @@ export function useRaceSimulation() {
 
   function onProgramTriggered() {
     if (isRunning.value) {
-      store.dispatch('pauseRace')
+      store.dispatch('race/pauseRace')
       stopAnimation()
     } else {
-      store.dispatch('startRace')
+      store.dispatch('race/startRace')
       startAnimation()
     }
   }
 
   function onResetRace() {
-    store.dispatch('resetRace')
+    store.dispatch('race/resetRace')
     resetAnimation()
   }
 

@@ -5,15 +5,11 @@
       <BaseButton
         :disabled="isRunning || hasError"
         data-testid="btn-generate"
-        @click="store.dispatch('generateProgram')"
+        @click="store.dispatch('race/generateProgram')"
       >
         Generate
       </BaseButton>
-      <BaseButton
-        :disabled="!store.getters.hasProgram || hasError"
-        data-testid="btn-start-pause"
-        @click="onProgramTriggered"
-      >
+      <BaseButton :disabled="!hasProgram || hasError" data-testid="btn-start-pause" @click="onProgramTriggered">
         {{ isRunning ? 'Pause' : 'Start' }}
       </BaseButton>
       <BaseButton data-testid="btn-reset" @click="onResetRace">Reset</BaseButton>
@@ -26,9 +22,12 @@ import BaseButton from '@/components/shared/BaseButton.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { useRaceSimulation } from '@/composables/useRaceSimulation'
+import { computed } from 'vue'
 
 const store = useStore(key)
 const { isRunning, hasError, onProgramTriggered, onResetRace } = useRaceSimulation()
+
+const hasProgram = computed(() => store.getters['race/hasProgram'])
 </script>
 
 <style scoped>

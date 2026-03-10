@@ -31,7 +31,7 @@ import { onMounted } from 'vue'
 
 const store = useStore(key)
 
-onMounted(() => store.dispatch('initHorses'))
+onMounted(() => store.dispatch('horses/initHorses'))
 </script>
 <style>
 body {

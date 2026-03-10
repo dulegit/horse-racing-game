@@ -24,6 +24,9 @@ export const resultsModule = {
       }
       commit('addRoundResult', roundResult)
     },
+    resetResults({ commit }: { commit: Function }) {
+      commit('clearResults')
+    },
   },
   getters: {},
 }

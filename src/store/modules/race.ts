@@ -1,7 +1,6 @@
 import type { LaneItem, RaceRound } from '@/types'
 import type { State } from '..'
 import { createLaneItems, getRaceSchedule } from '@/utils/helpers'
-import store from '..'
 
 export const DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200]
 
@@ -49,9 +48,8 @@ export const raceModule = {
       const { horseId, progress } = progressObj
       const horseToProgress = state.raceProgress.get(horseId)
       if (!horseToProgress) return
-      if (Math.ceil((horseToProgress.progress += progress)) >= 100) {
+      if (Math.ceil(horseToProgress.progress + progress) >= 100) {
         horseToProgress.progress = 100
-        store.commit('setCurrentRoundPlacement', horseId)
         return
       }
       horseToProgress.progress = horseToProgress.progress + progress
@@ -80,7 +78,7 @@ export const raceModule = {
     },
   },
   actions: {
-    generateProgram({ commit, rootState }: { commit: Function; rootState: State }) {
+    generateProgram({ commit, dispatch, rootState }: { commit: Function; dispatch: Function; rootState: State }) {
       const horses = rootState.horses.horses
       const program = getRaceSchedule(horses, DISTANCES)
 
@@ -90,7 +88,7 @@ export const raceModule = {
       }
       const laneItems = createLaneItems(program[0].horseIds, horses)
 
-      commit('clearResults')
+      dispatch('results/resetResults', null, { root: true })
       commit('clearRaceProgress')
       commit('setProgram', program)
       commit('setCurrentRoundIndex', 0)
@@ -133,13 +131,33 @@ export const raceModule = {
         commit('setRaceStatus', 'paused')
       }
     },
-    updateRaceProgress({ commit }: { commit: Function }, progressObj: { horseId: number; progress: number }) {
+    updateRaceProgress(
+      { commit, state }: { commit: Function; state: RaceState },
+      progressObj: { horseId: number; progress: number },
+    ) {
+      const { horseId, progress } = progressObj
+      const current = state.raceProgress.get(horseId)
+      if (current && Math.ceil(current.progress + progress) >= 100) {
+        commit('setRaceProgress', progressObj)
+        commit('setCurrentRoundPlacement', horseId)
+        return
+      }
       commit('setRaceProgress', progressObj)
     },
     resetCurrentPlacement({ commit }: { commit: Function }) {
       commit('clearCurrentPlacement')
     },
-    resetRace({ commit, state, rootState }: { commit: Function; state: RaceState; rootState: State }) {
+    resetRace({
+      commit,
+      dispatch,
+      state,
+      rootState,
+    }: {
+      commit: Function
+      dispatch: Function
+      state: RaceState
+      rootState: State
+    }) {
       const firstRound = state.program[0]
       const laneItems = firstRound ? createLaneItems(firstRound.horseIds, rootState.horses.horses) : []
       commit('setCurrentRoundIndex', 0)
@@ -147,7 +165,7 @@ export const raceModule = {
       commit('clearRaceProgress')
       commit('setInitRaceProgress', laneItems)
       commit('clearCurrentPlacement')
-      commit('clearResults')
+      dispatch('results/resetResults', null, { root: true })
     },
   },
 }

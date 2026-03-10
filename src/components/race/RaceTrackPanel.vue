@@ -28,7 +28,7 @@ import { key } from '@/store'
 
 const store = useStore(key)
 
-const currentRoundProgram: Ref<RaceRound | null> = computed(() => store.getters.currentRoundProgram)
+const currentRoundProgram: Ref<RaceRound | null> = computed(() => store.getters['race/currentRoundProgram'])
 const totalRounds = computed(() => store.state.race.program.length)
 const lanes = computed(() => store.state.race.raceProgress)
 </script>
