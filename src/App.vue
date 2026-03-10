@@ -78,4 +78,33 @@ body {
   text-align: center;
   margin: 20px;
 }
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .app {
+    height: auto;
+    overflow: visible;
+  }
+
+  .columns {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    flex: none;
+  }
+
+  .col-right {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .col-right {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

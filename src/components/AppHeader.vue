@@ -38,6 +38,7 @@ const hasProgram = computed(() => store.getters['race/hasProgram'])
   padding: 0.5rem 1rem;
   background: #2c3e50;
   color: #fff;
+  flex-wrap: wrap;
 }
 
 .app-title {
@@ -50,5 +51,13 @@ const hasProgram = computed(() => store.getters['race/hasProgram'])
 .actions {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 400px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>
