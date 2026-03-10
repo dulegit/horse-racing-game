@@ -68,7 +68,7 @@ export function useRaceSimulation() {
 
     const normalized = condition / 100
     const speed = MIN_SPEED + Math.pow(normalized, 1.3) * (MAX_SPEED - MIN_SPEED)
-    const tickMs = 100
+    const tickMs = 300
 
     return getPercentPerTick(speed, tickMs, distance)
   }

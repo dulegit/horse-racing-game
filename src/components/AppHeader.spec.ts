@@ -20,7 +20,7 @@ describe('AppHeader', () => {
   it('enables Start after Generate is clicked, then shows Pause once the race starts', async () => {
     vi.useFakeTimers()
     const { store, getByTestId } = render(AppHeader)
-    store.commit('setHorses', generateHorses(20))
+    store.commit('horses/setHorses', generateHorses(20))
 
     await fireEvent.click(getByTestId('btn-generate'))
 

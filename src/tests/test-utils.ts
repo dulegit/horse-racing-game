@@ -9,9 +9,9 @@ import { createStore } from 'vuex'
 const customRender = (component: Component, options = {}) => {
   const store = createStore({
     modules: {
-      horses: horsesModule,
-      race: raceModule,
-      results: resultsModule,
+      horses: { namespaced: true, ...horsesModule },
+      race: { namespaced: true, ...raceModule },
+      results: { namespaced: true, ...resultsModule },
     },
   })
 
