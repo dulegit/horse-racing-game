@@ -1,13 +1,14 @@
 import { key } from '@/store'
 import { DISTANCES } from '@/store/modules/race'
 import type { RaceRound } from '@/types'
-import { computed, ref, type ComputedRef } from 'vue'
+import { computed, onUnmounted, ref, type ComputedRef } from 'vue'
 import { useStore } from 'vuex'
 
 export function useRaceSimulation() {
   const store = useStore(key)
 
   const intervalId = ref<number | null>(null)
+  const timeoutIds = ref<number[]>([])
 
   const horsesState = computed(() => store.state.horses)
   const raceState = computed(() => store.state.race)
@@ -41,7 +42,7 @@ export function useRaceSimulation() {
       }
       store.dispatch('saveRoundResult', roundResult)
       if (currentRoundIndex < raceState.value.program.length - 1) {
-        setTimeout(tryNextRound, 500)
+        timeoutIds.value.push(setTimeout(tryNextRound, 500))
       }
     }
   }
@@ -52,10 +53,12 @@ export function useRaceSimulation() {
       store.dispatch('updateCurrentRoundIndex', nextRoundIndex)
       store.dispatch('startNewRound')
       store.dispatch('resetCurrentPlacement')
-      setTimeout(() => {
-        store.dispatch('startRace')
-        startAnimation()
-      }, 500)
+      timeoutIds.value.push(
+        setTimeout(() => {
+          store.dispatch('startRace')
+          startAnimation()
+        }, 500),
+      )
     }
   }
 
@@ -89,6 +92,8 @@ export function useRaceSimulation() {
       clearInterval(intervalId.value)
       intervalId.value = null
     }
+    timeoutIds.value.forEach(clearTimeout)
+    timeoutIds.value = []
   }
 
   function onProgramTriggered() {
@@ -109,6 +114,10 @@ export function useRaceSimulation() {
   function resetAnimation() {
     stopAnimation()
   }
+
+  onUnmounted(() => {
+    stopAnimation()
+  })
 
   return {
     isRunning,
